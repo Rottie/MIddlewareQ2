@@ -1,28 +1,37 @@
-// app.js
+// Setting up express framework
 const express = require('express')
 const app = express()
 const port = 3000
 
 //Setting template engine as handlebars
 const exphbs = require('express-handlebars');
-
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
 
+//This function can translate high resolution results to millisecons
+const getDurationInMilliseconds = (start) => {
+    const NS_PER_SEC = 1e9
+    const NS_TO_MS = 1e6
+    const diff = process.hrtime(start)
+    //diff[0] represent start point request-response cycle & diff[1] represent end pointt of request-response cycle
+    return (diff[0] * NS_PER_SEC + diff[1])/ NS_TO_MS
+}
+
+
 //I.ConsoleMessage middleware
-var consoleMessage =function (req,res,next){
+app.use ((req,res,next)=>{
   
-  //Step IA.Get timestamp
-  req.requestTime = new Date();
-  
+  //Step IA.Get current timestamp
+   req.start_time = new Date();
+   
   //Get year,month,day,hour,min,seconds
-  var dd = req.requestTime.getDate();
-  var mm = req.requestTime.getMonth()+1; 
-  var yyyy = req.requestTime.getFullYear();
-  var hr = req.requestTime.getHours();
-  var min = req.requestTime.getMinutes();
-  var sec = req.requestTime.getSeconds();
+  var dd = req.start_time.getDate();
+  var mm = req.start_time.getMonth()+1; 
+  var yyyy = req.start_time.getFullYear();
+  var hr = req.start_time.getHours();
+  var min = req.start_time.getMinutes();
+  var sec = req.start_time.getSeconds();
 
 
   //If value day,month,hour,minutes,seconds less than 0,will add '0' string before display out
@@ -48,57 +57,61 @@ if(mm<10)
     sec='0'+sec;
 } 
   //return all time unit values  within this string array
-  req.requestTime = yyyy+'-'+mm+'-'+dd+' '+hr+':'+min+':'+sec;
+  req.start_time = yyyy+'-'+mm+'-'+dd+' '+hr+':'+min+':'+sec;
+  
 
   //Step IB.Obtain http method
   req.httpMethod = req.method;
   
   //Step IC.Obtain Url
   req.routesUrl = req.url;
+
+  //Step ID.Obtain start point of a request-response cycle
+  const start = process.hrtime()
   
-  //Step ID.Combine these 3 params together before using it
-  req.consoleMessage = req.requestTime +' | '+req.httpMethod+' from '+req.routesUrl;  
+  //Step IE.Calculate response finish time
+  res.on('finish', () => {  
+     
+    //now previous start point and end point enter this function to calculate duration time
+    //then return from nano unit to mili unit
+      const durationInMilliseconds = getDurationInMilliseconds (start)
+    
+     
+
+     //Combine all value(cuurent timeStamp,method,url and duration request)
+     req.consoleMessage = req.start_time +' | '+req.httpMethod+' from '+req.routesUrl+'  total time  :'+durationInMilliseconds.toLocaleString()+'ms';
+
+     //Console log result
+     console.log(req.consoleMessage)
+     
+    })
+
   next();
-}
-
-
-//Step IE.Using middleware
-app.use(consoleMessage);
+})
 
 //   GET /
 app.get('/', (req, res) => {
   const text ='列出全部Todo';
-  //Display console Message on index.hbs
-  var msg = req.consoleMessage
- 
-  //Console out message
-  console.log(req.consoleMessage)
-  res.render('index',{text,msg})
+  res.render('index',{text})
 })
 
 //GET /new
 app.get('/new', (req, res) => {
   const text = '新增 Todo 頁面';
-  var msg = req.consoleMessage
-  console.log(req.consoleMessage)
-  res.render('index',{text,msg})
+  res.render('index',{text})
 })
  
 //GET :/id
 app.get('/:id', (req, res) => {
-  const text ='顯示一筆 Todo' ;
-  var msg = req.consoleMessage
-  console.log(req.consoleMessage)
-  res.render('index',{text,msg})
+  const text ='顯示一筆 Todo' ; 
+  res.render('index',{text})
  
 })
 
 //New  create post
 app.post('/', (req, res) => {
   const text ='新增一筆 Todo';
-  var msg = req.consoleMessage
-  console.log(req.consoleMessage)
-  res.render('index',{text,msg})
+  res.render('index',{text})
  
 })
 
