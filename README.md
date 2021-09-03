@@ -20,7 +20,7 @@ Click button then check terminal  records info of routes
 3.Installation
 
 3A.Git Clone Project
-git clone https://github.com/Rottie/Middleware.git
+git clone https://github.com/Rottie/MIddlewareQ2.git
 
 
 3B.Enter project Directory
