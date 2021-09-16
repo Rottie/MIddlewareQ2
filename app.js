@@ -8,8 +8,10 @@ const exphbs = require('express-handlebars');
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
+//Include statics files like images and css
+app.use(express.static('public'))
 
-//This function can translate high resolution results to millisecons
+//This function can translate high resolution results to milliseconds
 const getDurationInMilliseconds = (start) => {
     const NS_PER_SEC = 1e9
     const NS_TO_MS = 1e6
@@ -79,7 +81,7 @@ if(mm<10)
      
 
      //Combine all value(cuurent timeStamp,method,url and duration request)
-     req.consoleMessage = req.start_time +' | '+req.httpMethod+' from '+req.routesUrl+'  total time  :'+durationInMilliseconds.toLocaleString()+'ms';
+     req.consoleMessage = req.start_time +' | '+req.httpMethod+' from '+req.routesUrl+'  total time:'+durationInMilliseconds.toLocaleString()+'ms';
 
      //Console log result
      console.log(req.consoleMessage)

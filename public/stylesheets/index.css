@@ -1,0 +1,29 @@
+/* put all ui element right to center page */
+body {
+  /* ensure that div component locate at center page */
+  margin: 200px auto;
+}
+
+/* ensure four buttons and text result get arrange neatly */
+.index {
+  display: flex;
+  flex-flow: row wrap;
+
+  justify-content: space-evenly;
+}
+
+/* adjust button arrangement */
+.btn {
+  width: 400px;
+
+  margin: 10px auto;
+
+}
+
+/* adjust text content arrangement */
+.output {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
