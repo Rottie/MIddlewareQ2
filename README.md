@@ -26,7 +26,7 @@ git clone https://github.com/Rottie/MiddlewareQ2.git
 
 3B.Enter project Directory
 
-cd Middleware
+cd MiddlewareQ2
 
 3C.Instal node modules
 
