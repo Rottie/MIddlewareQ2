@@ -20,6 +20,7 @@ Click button then check terminal  records info of routes
 3.Installation
 
 3A.Git Clone Project
+
 git clone https://github.com/Rottie/MIddlewareQ2.git
 
 
@@ -28,10 +29,12 @@ git clone https://github.com/Rottie/MIddlewareQ2.git
 cd Middleware
 
 3C.Instal node modules
+
 npm install express express-handlebars
 
 
 3D.Start project
+
 npm run dev
 
 
