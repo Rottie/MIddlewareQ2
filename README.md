@@ -21,7 +21,7 @@ Click button then check terminal  records info of routes
 
 3A.Git Clone Project
 
-git clone https://github.com/Rottie/MIddlewareQ2.git
+git clone https://github.com/Rottie/MiddlewareQ2.git
 
 
 3B.Enter project Directory
